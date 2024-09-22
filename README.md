@@ -1,0 +1,1 @@
+# plugins-slim-seo
