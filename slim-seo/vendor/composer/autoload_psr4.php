@@ -6,5 +6,6 @@ $vendorDir = dirname(__DIR__);
 $baseDir = dirname($vendorDir);
 
 return array(
+    'SlimTwig\\' => array($vendorDir . '/elightup/slim-twig/src'),
     'SlimSEO\\' => array($baseDir . '/src'),
 );

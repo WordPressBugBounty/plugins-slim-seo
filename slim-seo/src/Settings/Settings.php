@@ -2,7 +2,7 @@
 namespace SlimSEO\Settings;
 
 class Settings {
-	private $meta_tags_manager;
+	private $meta_tags;
 
 	private $defaults = [
 		'header_code'            => '',
@@ -29,50 +29,38 @@ class Settings {
 		],
 	];
 
-	public function __construct( MetaTags\Manager $meta_tags_manager ) {
-		$this->meta_tags_manager = $meta_tags_manager;
+	public function __construct() {
+		$this->meta_tags = new MetaTags\Manager;
 	}
 
-	public function setup() {
+	public function setup(): void {
+		add_action( 'admin_print_styles-settings_page_slim-seo', [ $this, 'enqueue' ], 1 );
 		add_filter( 'slim_seo_settings_tabs', [ $this, 'add_tabs' ], 1 );
 		add_filter( 'slim_seo_settings_panes', [ $this, 'add_panes' ], 1 );
-		add_action( 'admin_print_styles-settings_page_slim-seo', [ $this, 'enqueue' ], 1 );
 
 		add_action( 'slim_seo_save', [ $this, 'save' ], 1 );
 	}
 
 	public function add_tabs( array $tabs ): array {
 		$tabs['general'] = __( 'Features', 'slim-seo' );
-
-		if ( $this->meta_tags_manager->has_homepage_settings() ) {
-			$tabs['homepage'] = __( 'Homepage', 'slim-seo' );
-		}
-		if ( $this->meta_tags_manager->get_post_types() ) {
-			$tabs['post-types'] = __( 'Post Types', 'slim-seo' );
-		}
-
-		$tabs['social'] = __( 'Social', 'slim-seo' );
-		$tabs['tools']  = __( 'Tools', 'slim-seo' );
+		$tabs['meta-tags'] = __( 'Meta Tags', 'slim-seo' );
+		$tabs['social']  = __( 'Social', 'slim-seo' );
+		$tabs['tools']   = __( 'Tools', 'slim-seo' );
 		return $tabs;
 	}
 
 	public function add_panes( array $panes ): array {
-		$panes['general'] = $this->get_pane( 'general' );
-
-		if ( $this->meta_tags_manager->has_homepage_settings() ) {
-			$panes['homepage'] = $this->get_pane( 'homepage' );
-		}
-		if ( $this->meta_tags_manager->get_post_types() ) {
-			$panes['post-types'] = $this->get_pane( 'post-types' );
-		}
-
-		$panes['social'] = $this->get_pane( 'social' );
-		$panes['tools']  = $this->get_pane( 'tools' );
+		$panes['general']   = $this->get_pane( 'general' );
+		$panes['meta-tags'] = $this->get_pane( 'meta-tags' );
+		$panes['social']    = $this->get_pane( 'social' );
+		$panes['tools']     = $this->get_pane( 'tools' );
 		return $panes;
 	}
 
 	public function enqueue() {
 		wp_enqueue_style( 'slim-seo-settings', SLIM_SEO_URL . 'css/settings.css', [], filemtime( SLIM_SEO_DIR . '/css/settings.css' ) );
+		$this->meta_tags->enqueue();
+
 		wp_enqueue_script( 'slim-seo-settings', SLIM_SEO_URL . 'js/settings.js', [], filemtime( SLIM_SEO_DIR . '/js/settings.js' ), true );
 
 		wp_enqueue_script( 'slim-seo-migrate', SLIM_SEO_URL . 'js/migrate.js', [], filemtime( SLIM_SEO_DIR . '/js/migrate.js' ), true );
@@ -81,8 +69,6 @@ class Settings {
 			'doneText'       => __( 'Done!', 'slim-seo' ),
 			'preProcessText' => __( 'Starting...', 'slim-seo' ),
 		] );
-
-		$this->meta_tags_manager->enqueue();
 	}
 
 	public function save() {
@@ -105,7 +91,7 @@ class Settings {
 	private function sanitize( $option, $data ) {
 		$option = array_merge( $this->defaults, $option );
 
-		$this->meta_tags_manager->sanitize( $option, $data );
+		$this->meta_tags->sanitize( $option, $data );
 
 		return array_filter( $option );
 	}
@@ -125,7 +111,7 @@ class Settings {
 
 		ob_start();
 		echo '<div id="', esc_attr( $name ), '" class="ss-tab-pane">';
-		include __DIR__ . "/sections/$name.php";
+		include __DIR__ . "/tabs/$name.php";
 		echo '</div>';
 		return ob_get_clean();
 	}

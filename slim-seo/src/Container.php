@@ -17,8 +17,9 @@ class Container {
 		$services['meta_description'] = new MetaTags\Description;
 		$services['meta_robots']      = new MetaTags\Robots( $services['canonical_url'] );
 
-		$services['settings_post'] = new MetaTags\Settings\Post;
-		$services['settings_term'] = new MetaTags\Settings\Term;
+		$services['settings_post']    = new MetaTags\Settings\Post;
+		$services['settings_term']    = new MetaTags\Settings\Term;
+		$services['settings_preview'] = new MetaTags\Settings\Preview;
 
 		$services['sitemaps']   = new Sitemaps\Manager;
 		$services['images_alt'] = new ImagesAlt;
@@ -28,10 +29,12 @@ class Container {
 		$services['beaver_builder'] = new Integrations\BeaverBuilder;
 		$services['bricks']         = new Integrations\Bricks;
 		$services['zion']           = new Integrations\ZionBuilder;
+		$services['divi']           = new Integrations\Divi;
+		$services['mylisting']      = new Integrations\MyListing;
 
-		$services['meta_tags_manager'] = new Settings\MetaTags\Manager;
-		$services['settings']          = new Settings\Settings( $services['meta_tags_manager'] );
-		$services['code']              = new Code( $services['settings'] );
+		$services['settings']           = new Settings\Settings;
+		$services['code']               = new Code( $services['settings'] );
+		$services['meta_tags_rest_api'] = new Settings\MetaTags\RestApi;
 
 		$services['redirection'] = new Redirection\Loader;
 		$services['breadcrumbs'] = new Breadcrumbs;
@@ -85,7 +88,6 @@ class Container {
 		$services['wpml']            = new Integrations\WPML;
 		$services['translatepress']  = new Integrations\TranslatePress;
 		$services['amp']             = new Integrations\AMP( $services['schema'] );
-		$services['divi']            = new Integrations\Divi;
 		$services['metabox']         = new Integrations\MetaBox;
 		$services['affiliatewp']     = new Integrations\AffiliateWP;
 		$services['senseilms']       = new Integrations\SenseiLMS;
