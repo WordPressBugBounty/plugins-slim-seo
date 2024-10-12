@@ -4,7 +4,6 @@ namespace SlimSEO\MetaTags;
 use WP_Post;
 use WP_Term;
 use WP_Post_Type;
-use SlimSEO\Helpers\Arr;
 
 class Data {
 	private $data = [];
@@ -36,12 +35,7 @@ class Data {
 	}
 
 	private function get_post_data(): array {
-		if ( $this->post_id ) {
-			$post = get_post( $this->post_id );
-		} else {
-			$post = is_singular() ? get_queried_object() : get_post();
-		}
-
+		$post = get_post( $this->post_id ?: QueriedObject::get_id() );
 		if ( empty( $post ) ) {
 			return [];
 		}
@@ -140,7 +134,11 @@ class Data {
 		return is_wp_error( $terms ) ? [] : wp_list_pluck( $terms, 'name' );
 	}
 
-	private function get_custom_field_data( WP_Post $post ): array {
+	private function get_custom_field_data( $post ): array {
+		if ( ! ( $post instanceof WP_Post ) ) {
+			return [];
+		}
+
 		$meta_values = get_post_meta( $post->ID );
 		$data        = [];
 		foreach ( $meta_values as $key => $value ) {
@@ -150,7 +148,7 @@ class Data {
 	}
 
 	private function get_other_data(): array {
-		global $wp_query, $page, $paged;
+		global $page, $paged;
 
 		return [
 			'current' => [
