@@ -29,7 +29,7 @@ class Data {
 			[ 'site' => $this->get_site_data() ],
 			$this->get_other_data()
 		);
-		$this->data = apply_filters( 'slim_seo_data', $this->data );
+		$this->data = apply_filters( 'slim_seo_data', $this->data, $this->post_id, $this->term_id );
 
 		return $this->data;
 	}
@@ -139,7 +139,7 @@ class Data {
 			return [];
 		}
 
-		$meta_values = get_post_meta( $post->ID );
+		$meta_values = get_post_meta( $post->ID ) ?: [];
 		$data        = [];
 		foreach ( $meta_values as $key => $value ) {
 			$data[ $key ] = reset( $value );
