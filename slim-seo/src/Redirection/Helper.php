@@ -96,4 +96,57 @@ class Helper {
 			\LiteSpeed\Purge::purge_all();
 		}
 	}
+
+	public static function csv_header(): array {
+		return [
+			esc_html( __( 'Type', 'slim-seo' ) ),
+			esc_html( __( 'Condition', 'slim-seo' ) ),
+			esc_html( __( 'From', 'slim-seo' ) ),
+			esc_html( __( 'To', 'slim-seo' ) ),
+			esc_html( __( 'Note', 'slim-seo' ) ),
+			esc_html( __( 'Enable', 'slim-seo' ) ),
+			esc_html( __( 'Ignore Parameters', 'slim-seo' ) ),
+		];
+	}
+
+	public static function csv_sample_data(): array {
+		return [
+			[
+				'301',
+				'exact-match',
+				'old-post',
+				'https://example.com/new-post/',
+				'',
+				'1',
+				'0',
+			],
+			[
+				'302',
+				'start-with',
+				'go',
+				'https://example.com/resources/',
+				'',
+				'1',
+				'1',
+			],
+			[
+				'301',
+				'contain',
+				'slim-seo',
+				'https://wpslimseo.com',
+				'',
+				'1',
+				'1',
+			],
+			[
+				'301',
+				'regex',
+				'blog/(.*)',
+				'https://example.com/$1/',
+				'',
+				'1',
+				'0',
+			],
+		];
+	}
 }
