@@ -17,7 +17,7 @@ class OpenGraph {
 	}
 
 	public function setup(): void {
-		add_action( 'wp_head', [ $this, 'output' ] );
+		add_action( 'slim_seo_head', [ $this, 'output' ] );
 	}
 
 	public function output(): void {
@@ -103,11 +103,11 @@ class OpenGraph {
 	}
 
 	private function get_article_published_time(): string {
-		return is_singular() && ! is_front_page() ? gmdate( 'c', strtotime( get_queried_object()->post_date_gmt ) ) : '';
+		return is_singular() && ! is_front_page() ? wp_date( 'c', strtotime( get_queried_object()->post_date_gmt ) ) : '';
 	}
 
 	private function get_article_modified_time(): string {
-		return is_singular() && ! is_front_page() ? gmdate( 'c', strtotime( get_queried_object()->post_modified_gmt ) ) : '';
+		return is_singular() && ! is_front_page() ? wp_date( 'c', strtotime( get_queried_object()->post_modified_gmt ) ) : '';
 	}
 
 	private function get_updated_time(): string {
