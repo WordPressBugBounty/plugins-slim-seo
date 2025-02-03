@@ -36,6 +36,7 @@ class Container {
 		$services['meta_box']       = new Integrations\MetaBox\MetaBox;
 		$services['woocommerce']    = new Integrations\WooCommerce;
 		$services['acf']            = new Integrations\ACF\ACF;
+		$services['kadence']            = new Integrations\Kadence;
 
 		$services['settings']           = new Settings\Settings;
 		$services['code']               = new Code( $services['settings'] );
@@ -44,7 +45,7 @@ class Container {
 		$services['redirection'] = new Redirection\Loader;
 		$services['breadcrumbs'] = new Breadcrumbs;
 
-		$services['rest_api'] = new RestApi;
+		$services['rest_api'] = new RestApi( $services['meta_title'], $services['meta_description'] );
 
 		$services['no_category_base'] = new NoCategoryBase;
 

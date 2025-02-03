@@ -56,6 +56,8 @@ class Bricks {
 			'facebook-page',
 			'form',
 			'icon',
+			'image',
+			'image-gallery',
 			'map',
 			'nav-menu',
 			'pagination',
@@ -80,6 +82,9 @@ class Bricks {
 			// WP Grid Builder.
 			'wpgb-facet',
 			'jet-engine-listing-grid',
+
+			// HappyFiles.
+			'happyfiles-gallery',
 		] );
 
 		return array_filter( $data, function ( $element ) use ( $skipped_elements ) {
