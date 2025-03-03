@@ -4,6 +4,7 @@ namespace SlimSEO\MetaTags;
 use SlimTwig\Renderer;
 use SlimSEO\Helpers\Arr;
 use WP_Block_Type_Registry;
+use WP_Block_Type;
 
 class Helper {
 	private static $allowed_shortcodes = [];
@@ -36,14 +37,14 @@ class Helper {
 		$text = preg_replace( '@<(script|style)[^>]*?>.*?</\\1>@si', '', $text );
 		$text = preg_replace( '@<[^>]*?>@s', ' ', $text );
 
-		// Remove lonely separator
-		$separator = apply_filters( 'document_title_separator', '-' ); // phpcs:ignore
-		$text      = trim( $text );
-		$text      = trim( $text, $separator );
-
 		// Remove extra white spaces.
 		$text = preg_replace( '/\s+/', ' ', $text );
-		$text = trim( $text );
+
+		// Remove lonely & repeated separator for meta title.
+		$sep  = apply_filters( 'document_title_separator', '-' ); // phpcs:ignore
+		$text = explode( $sep, $text );
+		$text = array_filter( array_map( 'trim', $text ) ); // Remove empty strings.
+		$text = implode( " $sep ", $text );
 
 		self::$ran = true;
 
@@ -63,6 +64,7 @@ class Helper {
 		 */
 		$skipped_shortcodes = apply_filters( 'slim_seo_skipped_shortcodes', [
 			'happyforms',
+			'jet_fb_form',
 			'contact',      // Very Simple Contact Form.
 			'edd_invoices',
 			'velocity',
@@ -86,18 +88,19 @@ class Helper {
 	}
 
 	private static function set_allowed_blocks(): void {
-		$block_types = array_keys( WP_Block_Type_Registry::get_instance()->get_all_registered() );
+		$block_types = WP_Block_Type_Registry::get_instance()->get_all_registered();
 
+		// Do not parse dynamic blocks.
+		$block_types = array_filter( $block_types, function ( WP_Block_Type $block ): bool {
+			return ! $block->is_dynamic();
+		} );
+
+		$block_names    = array_keys( $block_types );
 		$skipped_blocks = apply_filters( 'slim_seo_skipped_blocks', [
-			'core/query',
 			'core/code',
-			'fluentfom/guten-block',
-			'wpforms/form-selector',
-			'ninja-forms/form',
-			'mailpoet/subscription-form-block',
 		] );
 
-		self::$allowed_blocks = array_diff( $block_types, $skipped_blocks );
+		self::$allowed_blocks = array_diff( $block_names, $skipped_blocks );
 		self::$allowed_blocks = apply_filters( 'slim_seo_allowed_blocks', self::$allowed_blocks );
 	}
 
