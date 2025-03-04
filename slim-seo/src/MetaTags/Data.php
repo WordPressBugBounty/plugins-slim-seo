@@ -142,7 +142,10 @@ class Data {
 		$meta_values = get_post_meta( $post->ID ) ?: [];
 		$data        = [];
 		foreach ( $meta_values as $key => $value ) {
-			$data[ $key ] = reset( $value );
+			// Plugins like JetEngine can hook to "get_{$object_type}_metadata" to add its data from custom table
+			// which might not follow WordPress standards of auto serialization/unserialization for arrays
+			// so we will add a check to bypass invalid values here.
+			$data[ $key ] = is_array( $value ) ? reset( $value ) : '';
 		}
 		return $data;
 	}
@@ -157,7 +160,7 @@ class Data {
 			],
 			// Translators: %s - page number
 			'page'    => $paged >= 2 || $page >= 2 ? sprintf( __( 'Page %s', 'slim-seo' ), max( $paged, $page ) ) : '',
-			'sep'     => apply_filters( 'document_title_separator', '-' ), // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
+			'sep'     => '{{ sep }}', // Do not replace it yet. See Helper::normalize().
 		];
 	}
 

@@ -1,6 +1,8 @@
 <?php
 namespace SlimSEO\Integrations;
 
+use WP_Post;
+
 class WooCommerce {
 	private $tags = [
 		'product:price:amount',
@@ -19,20 +21,30 @@ class WooCommerce {
 		add_action( 'template_redirect', [ $this, 'process' ] );
 		add_filter( 'slim_seo_variables', [ $this, 'add_variables' ] );
 		add_filter( 'slim_seo_data', [ $this, 'add_data' ], 10, 3 );
+
+		add_filter( 'slim_seo_breadcrumbs_args', [ $this, 'change_breadcrumbs_taxonomy' ] );
+		add_filter( 'slim_seo_allowed_shortcodes', [ $this, 'exclude_shortcodes' ] );
+
+		// Priority 1 to run before all page builders that trying to parse content of WooCommerce pages.
+		// We need to tell Slim SEO not to parse content of these pages, and remove all filters that might be added for other page builders.
+		add_filter( 'slim_seo_post_content', [ $this, 'filter_content' ], 1, 2 );
 	}
 
 	public function process(): void {
-		add_filter( 'slim_seo_breadcrumbs_args', [ $this, 'change_breadcrumbs_taxonomy' ] );
-
-		if ( $this->is_skipped_page() ) {
-			add_filter( 'slim_seo_post_content', '__return_empty_string' );
-		}
-
-		add_filter( 'slim_seo_allowed_shortcodes', [ $this, 'exclude_shortcodes' ] );
-
 		if ( is_singular( 'product' ) ) {
 			$this->add_pinterest_pins();
 		}
+	}
+
+	public function filter_content( string $post_content, WP_Post $post ): string {
+		if ( ! $this->is_skipped_page( $post ) ) {
+			return $post_content;
+		}
+
+		// Remove all filters that might be added for other page builders
+		// So they don't try to parse their content of these pages, which can be very complicated and troublesome.
+		remove_all_filters( 'slim_seo_post_content' );
+		return '';
 	}
 
 	public function change_breadcrumbs_taxonomy( array $args ): array {
@@ -42,8 +54,13 @@ class WooCommerce {
 		return $args;
 	}
 
-	private function is_skipped_page(): bool {
-		return is_cart() || is_checkout() || is_account_page();
+	/**
+	 * Check whether to skip parsing content for these pages.
+	 * Need to check for both front end and back end (need to show meta tags in admin columns).
+	 */
+	private function is_skipped_page( WP_Post $post ): bool {
+		$pages = array_map( 'wc_get_page_id', [ 'cart', 'checkout', 'myaccount' ] );
+		return is_cart() || is_checkout() || is_account_page() || in_array( $post->ID, $pages );
 	}
 
 	public function exclude_shortcodes( array $shortcodes ): array {
@@ -105,18 +122,18 @@ class WooCommerce {
 		$variables[] = [
 			'label'   => 'WooCommerce',
 			'options' => [
-				'product.price'          => __( 'Price', 'slim-seo-schema' ),
-				'product.price_with_tax' => __( 'Price including tax', 'slim-seo-schema' ),
-				'product.sale_from'      => __( 'Sale price date "From"', 'slim-seo-schema' ),
-				'product.sale_to'        => __( 'Sale price date "To"', 'slim-seo-schema' ),
-				'product.sku'            => __( 'SKU', 'slim-seo-schema' ),
-				'product.stock'          => __( 'Stock status', 'slim-seo-schema' ),
-				'product.currency'       => __( 'Currency', 'slim-seo-schema' ),
-				'product.rating'         => __( 'Rating value', 'slim-seo-schema' ),
-				'product.review_count'   => __( 'Review count', 'slim-seo-schema' ),
-				'product.low_price'      => __( 'Low price (variable product)', 'slim-seo-schema' ),
-				'product.high_price'     => __( 'High price (variable product)', 'slim-seo-schema' ),
-				'product.offer_count'    => __( 'Offer count (variable product)', 'slim-seo-schema' ),
+				'product.price'          => __( 'Price', 'slim-seo' ),
+				'product.price_with_tax' => __( 'Price including tax', 'slim-seo' ),
+				'product.sale_from'      => __( 'Sale price date "From"', 'slim-seo' ),
+				'product.sale_to'        => __( 'Sale price date "To"', 'slim-seo' ),
+				'product.sku'            => __( 'SKU', 'slim-seo' ),
+				'product.stock'          => __( 'Stock status', 'slim-seo' ),
+				'product.currency'       => __( 'Currency', 'slim-seo' ),
+				'product.rating'         => __( 'Rating value', 'slim-seo' ),
+				'product.review_count'   => __( 'Review count', 'slim-seo' ),
+				'product.low_price'      => __( 'Low price (variable product)', 'slim-seo' ),
+				'product.high_price'     => __( 'High price (variable product)', 'slim-seo' ),
+				'product.offer_count'    => __( 'Offer count (variable product)', 'slim-seo' ),
 			],
 		];
 
