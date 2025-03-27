@@ -5,7 +5,7 @@ Tags: seo, schema, xml sitemap, redirection, header
 Requires at least: 5.9
 Tested up to: 6.7.2
 Requires PHP: 7.2
-Stable tag: 4.4.1
+Stable tag: 4.5.0
 License: GPL v3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -161,6 +161,19 @@ Add the following constant in your `wp-config.php` file:
 
 == Changelog ==
 
+= 4.5.0 - 2025-03-27 =
+
+Highlights:
+
+- This version improves the integration for Polylang and WPML, allowing you to switch languages for the settings page and enter different settings per language.
+- Add support for Visual Composer (WPBakery Page Builder) and Tagdiv Composer (Newspaper theme)
+
+Other changes:
+- Exclude Beaver Builder shortcode by default
+- Do not enqueue JS for non-supported post types in the admin
+- Fix the integration for Sensei LMS
+- Fix issues with WooCommerce integration to not parsing content of pages below cart/checkout/my account pages in admin page table list
+
 = 4.4.1 - 2025-03-04 =
 - Improve Woo integration, avoid page builders to parse content for Woo's pages to generate meta description (cart, checkout, my account)
 - Fix for JetEngine custom DB table for meta storage
@@ -169,11 +182,13 @@ Add the following constant in your `wp-config.php` file:
 = 4.4.0 - 2025-03-03 =
 
 Highlights:
+
 - This version adds an integration with Breakdance page builder plugin, which allows the plugin to parse content from Breakdance for generating meta description.
 - Since this version, Slim SEO won't parse all dynamic blocks when parsing the content to generate meta description. This avoids breaking layout, especially when those blocks have logic or enqueue CSS/JS. This change will fix a lot of issues with plugins that use dynamic blocks like form plugins (JetForm Builder, Forminator, etc.).
 - For meta title and meta description in the admin post list table, now the plugin will display a small indicator if the post has manual title or description.
 
 Other changes:
+
 - Improve integration with WPML, allowing to translate settings like meta tags into different languages. Requires WPML String Translation plugin.
 - Capitalize only 1st letter in image alt to work better with all languages.
 - Fix missing posts in alternate languages in the sitemap that don't have translations in the default language (with Polylang).

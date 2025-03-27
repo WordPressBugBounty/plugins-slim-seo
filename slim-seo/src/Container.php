@@ -25,19 +25,22 @@ class Container {
 		$services['sitemaps']   = new Sitemaps\Manager;
 		$services['images_alt'] = new ImagesAlt;
 
-		$services['oxygen']         = new Integrations\Oxygen;
-		$services['elementor']      = new Integrations\Elementor;
-		$services['beaver_builder'] = new Integrations\BeaverBuilder;
-		$services['breakdance']     = new Integrations\Breakdance;
-		$services['bricks']         = new Integrations\Bricks;
-		$services['zion']           = new Integrations\ZionBuilder;
-		$services['divi']           = new Integrations\Divi;
-		$services['mylisting']      = new Integrations\MyListing;
-		$services['forminator']     = new Integrations\Forminator;
-		$services['meta_box']       = new Integrations\MetaBox\MetaBox;
-		$services['woocommerce']    = new Integrations\WooCommerce;
-		$services['acf']            = new Integrations\ACF\ACF;
-		$services['kadence']            = new Integrations\Kadence;
+		$services['oxygen']          = new Integrations\Oxygen;
+		$services['elementor']       = new Integrations\Elementor;
+		$services['beaver_builder']  = new Integrations\BeaverBuilder;
+		$services['breakdance']      = new Integrations\Breakdance;
+		$services['bricks']          = new Integrations\Bricks;
+		$services['zion']            = new Integrations\ZionBuilder;
+		$services['divi']            = new Integrations\Divi;
+		$services['mylisting']       = new Integrations\MyListing;
+		$services['forminator']      = new Integrations\Forminator;
+		$services['meta_box']        = new Integrations\MetaBox\MetaBox;
+		$services['woocommerce']     = new Integrations\WooCommerce;
+		$services['acf']             = new Integrations\ACF\ACF;
+		$services['kadence']         = new Integrations\Kadence;
+		$services['visual_composer'] = new Integrations\VisualComposer;
+		$services['polylang']        = new Integrations\Polylang;
+		$services['wpml']            = new Integrations\WPML;
 
 		$services['settings']           = new Settings\Settings;
 		$services['code']               = new Code( $services['settings'] );
@@ -92,8 +95,6 @@ class Container {
 		$services['genesis']         = new Integrations\Genesis;
 		$services['lifterlms']       = new Integrations\LifterLMS;
 		$services['jetpack']         = new Integrations\Jetpack;
-		$services['polylang']        = new Integrations\Polylang;
-		$services['wpml']            = new Integrations\WPML;
 		$services['translatepress']  = new Integrations\TranslatePress;
 		$services['amp']             = new Integrations\AMP( $services['schema'] );
 		$services['affiliatewp']     = new Integrations\AffiliateWP;
