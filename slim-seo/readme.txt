@@ -5,7 +5,7 @@ Tags: seo, schema, xml sitemap, redirection, header
 Requires at least: 5.9
 Tested up to: 6.7.2
 Requires PHP: 7.2
-Stable tag: 4.5.0
+Stable tag: 4.5.1
 License: GPL v3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -76,12 +76,19 @@ Slim SEO automatically adds the some structured data to the website via JSON-LD 
 - [Import and export](https://docs.wpslimseo.com/slim-seo/import-export/) data or migrate data from popular SEO plugins
 - Auto redirect if post slug changed
 
-### Premium plugins
+### Slim SEO Pro
 
-- [Slim SEO Schema](https://wpslimseo.com/products/slim-seo-schema/) - An advanced, powerful and flexible plugin to add schemas to WordPress.
-- [Slim SEO Link Manager](https://wpslimseo.com/products/slim-seo-link-manager/) - Build internal link easier in WordPress with real-time reports.
+Upgrade to [Slim SEO Pro](https://elu.to/wrp) to have access to advanced SEO features without complexity:
 
-[View all](https://wpslimseo.com/products/)
+- Visual schema builder
+- 30+ pre-built schema types
+- Custom schema with JSON-LD
+- Contextual link suggestions
+- Real-time link health monitoring
+- Broken link repair
+- Link updater
+
+[Get Slim SEO Pro now](https://elu.to/wrp).
 
 ### Who should use Slim SEO?
 
@@ -160,6 +167,13 @@ Add the following constant in your `wp-config.php` file:
 == Upgrade Notice ==
 
 == Changelog ==
+
+= 4.5.1 - 2025-04-11 =
+
+- To avoid issues with Bricks, from now the plugin doesn't parse the content from Bricks for generating meta tags if the post uses a template. In this case the plugin always use the post content.
+- Fix rendering meta tags in the admin post list table as Bricks doesn't support parsing dynamic tags in the admin.
+- Ignore Bricks components when parsing meta tags
+- Fix core/heading block is excluded from parsing for meta tags
 
 = 4.5.0 - 2025-03-27 =
 
@@ -240,7 +254,7 @@ Other changes:
 - Fix: 404 logs pagination error
 - Fix languages loaded too early in WordPress 6.7
 - Fix zoom feature in WP 6.7 not working because the breadcrumb block uses API version 2
-- Fix not excluding taxonomies from the sitemap when enable the option "Hide from search engines" in the Meta Tags settings page
+- Fix not excluding taxonomies issue from the sitemap when enable the option "Hide from search engines" in the Meta Tags settings page
 - Fix PHP warning when getting all post metas
 
 = 4.0.4 - 2024-11-05 =
