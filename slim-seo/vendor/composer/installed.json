@@ -6,8 +6,14 @@
             "version_normalized": "dev-master",
             "source": {
                 "type": "git",
-                "url": "git@github.com:elightup/slim-twig.git",
+                "url": "https://github.com/elightup/slim-twig.git",
                 "reference": "04ebb63b2d6c857ce842a1f089803abd4a020d80"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/elightup/slim-twig/zipball/04ebb63b2d6c857ce842a1f089803abd4a020d80",
+                "reference": "04ebb63b2d6c857ce842a1f089803abd4a020d80",
+                "shasum": ""
             },
             "require-dev": {
                 "phpunit/phpunit": "^11.2"
@@ -15,16 +21,16 @@
             "time": "2024-07-18T04:56:26+00:00",
             "default-branch": true,
             "type": "library",
-            "installation-source": "source",
+            "installation-source": "dist",
             "autoload": {
                 "psr-4": {
                     "SlimTwig\\": "src/"
                 }
             },
-            "autoload-dev": {
-                "psr-4": {
-                    "Tests\\": "tests/"
-                }
+            "notification-url": "https://packagist.org/downloads/",
+            "support": {
+                "issues": "https://github.com/elightup/slim-twig/issues",
+                "source": "https://github.com/elightup/slim-twig/tree/master"
             },
             "install-path": "../elightup/slim-twig"
         }
