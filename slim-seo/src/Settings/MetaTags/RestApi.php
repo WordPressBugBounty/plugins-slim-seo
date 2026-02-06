@@ -2,7 +2,7 @@
 namespace SlimSEO\Settings\MetaTags;
 
 use WP_REST_Server;
-use SlimSEO\Helpers\Data;
+use eLightUp\SlimSEO\Common\Helpers\Data as CommonHelpersData;
 
 class RestApi {
 	public function setup(): void {
@@ -36,14 +36,13 @@ class RestApi {
 	}
 
 	public function has_permission(): bool {
-		return current_user_can( 'manage_options' );
+		return current_user_can( 'edit_posts' );
 	}
 
 	public function get_option(): array {
 		$exclude = array_fill_keys( [
 			'auto_redirection',
 			'enable_404_logs',
-			'features',
 			'footer_code',
 			'force_trailing_slash',
 			'header_code',
@@ -59,7 +58,7 @@ class RestApi {
 	}
 
 	public function get_variables() {
-		$taxonomies = Data::get_taxonomies();
+		$taxonomies = CommonHelpersData::get_taxonomies();
 		unset( $taxonomies['category'], $taxonomies['post_tag'] );
 
 		$taxonomy_options = [];

@@ -14,6 +14,12 @@ abstract class Base {
 		'noindex'        => 0,
 	];
 
+	protected $quick_edit = [
+		'title'          => '',
+		'description'    => '',
+		'noindex'        => 0,
+	];
+
 	public function enqueue(): void {
 		wp_enqueue_media();
 
@@ -25,41 +31,7 @@ abstract class Base {
 		] );
 	}
 
-	public function render(): void {
-		$tabs = apply_filters( 'slim_seo_metabox_tabs', [] );
-
-		if ( empty( $tabs ) ) {
-			$this->general_tab();
-			return;
-		}
-		?>
-
-		<nav class="ss-tab-list">
-			<a href="#general" class="ss-tab"><?php esc_html_e( 'General', 'slim-seo' ); ?></a>
-			<?php
-			foreach ( $tabs as $key => $label ) {
-				printf( '<a href="#%s" class="ss-tab">%s</a>', esc_attr( $key ), esc_html( $label ) );
-			}
-			?>
-		</nav>
-
-		<div id="general" class="ss-tab-pane">
-			<?php $this->general_tab(); ?>
-		</div>
-
-		<?php
-		$panes = apply_filters( 'slim_seo_metabox_panels', [] );
-		echo implode( '', $panes ); // phpcs:ignore
-	}
-
-	public function general_tab(): void {
-		wp_nonce_field( 'save', 'ss_nonce' );
-		?>
-		<div id="ss-single"></div>
-		<?php
-	}
-
-	public function save( $object_id ) {
+	public function save( int $object_id ): void {
 		if ( ! check_ajax_referer( 'save', 'ss_nonce', false ) || empty( $_POST ) ) {
 			return;
 		}
@@ -70,6 +42,7 @@ abstract class Base {
 		// Do not erase existing data when quick editing.
 		if ( isset( $_POST['action'] ) && $_POST['action'] === 'inline-save' ) { // phpcs:ignore
 			$existing_data = get_metadata( $this->object_type, $object_id, 'slim_seo', true ) ?: [];
+			$data          = array_intersect_key( $data, $this->quick_edit );
 			$data          = array_merge( $existing_data, $data );
 		}
 
@@ -82,7 +55,7 @@ abstract class Base {
 		}
 	}
 
-	private function sanitize( $data ) {
+	private function sanitize( array $data ): array {
 		$data = array_merge( $this->defaults, $data );
 
 		$data['title']          = sanitize_text_field( $data['title'] );
@@ -95,13 +68,13 @@ abstract class Base {
 		return array_filter( $data );
 	}
 
-	private function get_data() {
+	private function get_data(): array {
 		$data = get_metadata( $this->object_type, $this->get_object_id(), 'slim_seo', true );
 		$data = is_array( $data ) && ! empty( $data ) ? $data : [];
 
 		return array_merge( $this->defaults, $data );
 	}
 
-	abstract public function get_types();
-	abstract protected function get_object_id();
+	abstract public function get_types(): array;
+	abstract protected function get_object_id(): int;
 }

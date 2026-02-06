@@ -1,11 +1,11 @@
-=== Slim SEO - Fast & Automated WordPress SEO Plugin ===
-Contributors: elightup, rilwis, hungviet91, barcavn2
-Donate link: https://wpslimseo.com/products/
+=== Slim SEO - A Fast & Automated SEO Plugin For WordPress ===
+Contributors: elightup, rilwis, hungviet91, barcavn2, doanducanh
+Donate link: https://wpslimseo.com/products/slim-seo-pro/
 Tags: seo, schema, xml sitemap, redirection, header
 Requires at least: 5.9
-Tested up to: 6.8.2
+Tested up to: 6.9
 Requires PHP: 7.2
-Stable tag: 4.6.2
+Stable tag: 4.8.3
 License: GPL v3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -87,6 +87,8 @@ Upgrade to [Slim SEO Pro](https://elu.to/wrp) to have access to advanced SEO fea
 - Real-time link health monitoring
 - Broken link repair
 - Link updater
+- View search performance with Google Search Console integration
+- Improve your content with writing assistant
 
 [Get Slim SEO Pro now](https://elu.to/wrp).
 
@@ -101,6 +103,7 @@ However, Slim SEO is perfectly suitable for users who prefer simplicity or do no
 If you like this plugin, you might also like our other WordPress products:
 
 - [Meta Box](https://metabox.io) - A powerful WordPress plugin for creating custom post types and custom fields.
+- [Falcon](https://wpfalcon.pro) - A lightweight companion for making WordPress faster, cleaner, and more secure.
 - [GretaThemes](https://gretathemes.com) - Free and premium WordPress themes that clean, simple and just work.
 - [Auto Listings](https://wpautolistings.com) - A car sale and dealership plugin for WordPress.
 
@@ -168,7 +171,67 @@ Add the following constant in your `wp-config.php` file:
 
 == Changelog ==
 
-### 4.6.2 - 2025-08-13
+= 4.8.3 - 2026-01-06 =
+
+- Fix link attributes modal CSS horizontal issue
+- Fix meta tags for author page
+- Fix conflict between redirect and WPML
+
+= 4.8.2 - 2025-12-20 =
+
+- Fix error when updating Free version first and Pro version at <= 1.7.0 due to load order in Composer
+- Fix conflict between redirect and TranslatePress
+
+= 4.8.1 - 2025-12-18 =
+
+- Add basic support for GenerateBlocks (container, text, headline)
+
+= 4.8.0 - 2025-12-04 =
+
+**Highlights:**
+
+This version allows you to edit the content of the `robots.txt` file in the Tools tab. It also add migrations for `robots.txt` from other SEO plugins.
+
+**Other changes:**
+
+- Fix editors can't see settings for Facebook/Twitter images
+- Exclude WooCommerce products by visibility in sitemaps
+- Fix quick edit loses Facebook/Twitter images
+- WPML integration: fix generating sitemaps for non-default languages & fix getting URLs for posts #248
+- Fix compatibility with WP Extended Pro (disable blog module)
+
+= 4.7.3 - 2025-11-07 =
+
+Fix Facebook/Twitter image fields not showing with default settings
+
+= 4.7.2 - 2025-11-07 =
+
+- Schema: fix warning when an image is deleted
+- Fix JS error when using default settings
+
+= 4.7.1 - 2025-11-06 =
+
+- Remove inputs for Facebook/Twitter image if the Open Graph/Twitter Cards are disabled.
+- Remove numbers from the end of alt text, and capitalize the 1st letter only, keeping other characters unchanged
+- WPML integration: fix getting post type archive URL
+
+= 4.7.0 - 2025-10-22 =
+
+**Highlights:**
+
+- Merge the SEO settings meta box of the Free version and Pro version into a single one.
+- Improve the output of multilingual sitemap. Now it will output all alternate hreflang URLs as separated entries to strictly follow Google's rules. Also added `x-default` link.
+
+**Other changes:**
+
+- Set blog page's schema type to CollectionPage
+- Ensure users can read the post to preview the meta title & description
+- Fix compatibility with Patchstack due to REST API endpoint names
+- Fix activate first tab not working when hash is not a valid tab
+- Fix import redirects
+- Fix getting terms' values for ACF fields
+
+= 4.6.2 - 2025-08-13 =
 
 - Multilingual sitemap: only output translated versions if available
 

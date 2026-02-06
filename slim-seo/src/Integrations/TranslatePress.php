@@ -1,62 +1,77 @@
 <?php
 namespace SlimSEO\Integrations;
 
+use WP_Post;
+use WP_Term;
+use SlimSEO\Helpers\Data as HelpersData;
+
 class TranslatePress {
-	private $trp;
+	use MultilingualSitemapTrait;
+	private $url_converter;
+	private $settings;
 
 	public function is_active(): bool {
 		return defined( 'TRP_PLUGIN_VERSION' );
 	}
 
-	public function setup() {
-		$this->trp = \TRP_Translate_Press::get_trp_instance();
+	public function setup(): void {
+		$trp                 = \TRP_Translate_Press::get_trp_instance();
+		$this->url_converter = $trp->get_component( 'url_converter' );
+		$this->settings      = $trp->get_component( 'settings' );
 
-		add_action( 'slim_seo_sitemap_post', [ $this, 'add_post_links' ] );
-		add_action( 'slim_seo_sitemap_term', [ $this, 'add_term_links' ] );
-		add_filter( 'wpseo_sitemap_url', [ $this, 'get_url' ], 0, 2 );  // phpcs:ignore
+		$this->setup_sitemap_hooks();
+
+		add_filter( 'slim_seo_redirection_home_url', [ HelpersData::class, 'multilanguage_home_url' ], 10, 2 );
 	}
 
-	public function add_post_links( \WP_Post $post ): void {
-		$this->add_links( get_permalink( $post ) );
+	private function get_post_translations( WP_Post $post ): array {
+		return $this->get_translations( get_permalink( $post ), $post );
 	}
 
-	public function add_term_links( \WP_Term $term ): void {
-		$this->add_links( get_term_link( $term ) );
+	private function get_term_translations( WP_Term $term ): array {
+		return $this->get_translations( get_term_link( $term ) );
 	}
 
-	private function add_links( string $url ): void {
-		$languages = $this->get_languages();
+	private function get_homepage_translations(): array {
+		return $this->get_translations( home_url( '/' ) );
+	}
+
+	private function get_post_type_archive_translations( string $post_type ): array {
+		return $this->get_translations( get_post_type_archive_link( $post_type ) );
+	}
+
+	private function get_translations( string $url, ?WP_Post $post = null ): array {
+		$languages    = $this->get_languages();
+		$translations = [];
+
 		foreach ( $languages as $language ) {
-			/**
-			 * Hack: TranslatePress checks current filter to bypass translating URLs in sitemaps.
-			 * We have to use the Yoast SEO's filter name to make it work.
-			 * This will be removed when TranslatePress adds support for Slim SEO's hooks.
-			 */
-			$translated_url = apply_filters( 'wpseo_sitemap_url', $url, $language ); // phpcs:ignore
-			if ( $translated_url === $url ) {
-				continue;
+			$translated_url = $this->get_url( $url, $language );
+			$translation    = [
+				'language' => $language,
+				'url'      => $translated_url,
+			];
+			if ( $post ) {
+				$translation['lastmod'] = wp_date( 'c', strtotime( $post->post_modified_gmt ) );
 			}
-
-			printf(
-				"\t\t<xhtml:link rel=\"alternate\" hreflang=\"%s\" href=\"%s\"/>\n",
-				esc_attr( $language ),
-				esc_url( $translated_url )
-			);
+			$translations[] = $translation;
 		}
+
+		return $translations;
 	}
 
-	public function get_url( string $url, string $language ): string {
-		// Remove TranslatePress callback for this hook to avoid potential errors.
-		remove_all_actions( 'wpseo_sitemap_url' );
-
-		$url_converter = $this->trp->get_component( 'url_converter' );
-		return $url_converter->get_url_for_language( $language, $url, '' );
+	private function get_url( string $url, string $language ): string {
+		return $this->url_converter->get_url_for_language( $language, $url, '' );
 	}
 
 	private function get_languages(): array {
-		$trp_settings = $this->trp->get_component( 'settings' );
-		$settings     = $trp_settings->get_settings();
+		$settings = $this->settings->get_settings();
 
-		return array_diff( $settings['publish-languages'], [ $settings['default-language'] ] );
+		return $settings['publish-languages'];
+	}
+
+	private function get_default_language(): string {
+		$settings = $this->settings->get_settings();
+
+		return $settings['default-language'];
 	}
 }

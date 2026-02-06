@@ -1,17 +1,16 @@
 <?php
 namespace SlimSEO\Sitemaps;
 
-use SlimSEO\Helpers\Data;
+use eLightUp\SlimSEO\Common\Helpers\Data as CommonHelpersData;
 
 class Manager {
 	private $post_types = [];
 	private $taxonomies = [];
 
 	public function setup(): void {
-		add_action( 'init', [ $this, 'add_rewrite_rules' ], 20 ); // Priority 20 to make sure all post types & taxonomies are registered.
+		add_action( 'init', [ $this, 'add_rewrite_rules' ], 9999 ); // Priority 9999 to make sure all post types & taxonomies are registered.
 		add_filter( 'query_vars', [ $this, 'add_query_vars' ] );
 		add_action( 'template_redirect', [ $this, 'output' ], 0 );
-		add_filter( 'robots_txt', [ $this, 'add_to_robots_txt' ], 20 ); // Priority 20 to output it below user-agent rules.
 
 		// Disable core sitemaps. Use `init` instead of `wp_sitemaps_enabled` to "completely" remove core sitemaps functionality, such as registering rewrite rules.
 		remove_action( 'init', 'wp_sitemaps_get_server' );
@@ -113,13 +112,9 @@ class Manager {
 		die;
 	}
 
-	public function add_to_robots_txt( string $output ): string {
-		return $output . "\nSitemap: " . home_url( 'sitemap.xml' ) . "\n";
-	}
-
 	private function get_post_types(): void {
 		$option     = get_option( 'slim_seo' );
-		$post_types = array_keys( Data::get_post_types() );
+		$post_types = array_keys( CommonHelpersData::get_post_types() );
 		$post_types = array_filter( $post_types, function ( $post_type ) use ( $option ): bool {
 			return empty( $option[ $post_type ]['noindex'] );
 		} );
@@ -129,7 +124,7 @@ class Manager {
 
 	private function get_taxonomies(): void {
 		$option     = get_option( 'slim_seo' );
-		$taxonomies = array_keys( Data::get_taxonomies() );
+		$taxonomies = array_keys( CommonHelpersData::get_taxonomies() );
 		$taxonomies = array_filter( $taxonomies, function ( $taxonomy ) use ( $option ): bool {
 			return empty( $option[ $taxonomy ]['noindex'] );
 		} );
