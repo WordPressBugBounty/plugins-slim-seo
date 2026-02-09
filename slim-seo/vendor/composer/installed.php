@@ -1,9 +1,9 @@
 <?php return array(
     'root' => array(
         'name' => 'elightup/slim-seo',
-        'pretty_version' => '4.8.3',
-        'version' => '4.8.3.0',
-        'reference' => '5f8357322bc79015a3b01145a23e09322da82845',
+        'pretty_version' => '4.9.0',
+        'version' => '4.9.0.0',
+        'reference' => 'f10ce9f163a6da49874ea988b418c7435ee01f5b',
         'type' => 'wordpress-plugin',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -11,9 +11,9 @@
     ),
     'versions' => array(
         'elightup/slim-seo' => array(
-            'pretty_version' => '4.8.3',
-            'version' => '4.8.3.0',
-            'reference' => '5f8357322bc79015a3b01145a23e09322da82845',
+            'pretty_version' => '4.9.0',
+            'version' => '4.9.0.0',
+            'reference' => 'f10ce9f163a6da49874ea988b418c7435ee01f5b',
             'type' => 'wordpress-plugin',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
