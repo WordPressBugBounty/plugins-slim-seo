@@ -122,7 +122,7 @@ class Page {
 						<div class="inside">
 							<p><?php esc_html_e( 'Like this plugin? Check out our other WordPress products:', 'slim-seo' ) ?></p>
 							<p><a href="https://elu.to/ssm" target="_blank"><strong>Meta Box</strong></a>: <?php esc_html_e( 'A framework for dynamic WordPress websites', 'slim-seo' ) ?></p>
-							<p><a href="https://wordpress.org/plugins/falcon/" target="_blank"><strong>Falcon</strong></a>: <?php esc_html_e( 'WordPress optimization & tweaks', 'slim-seo' ) ?></p>
+							<p><a href="https://elu.to/ssf" target="_blank"><strong>Falcon</strong></a>: <?php esc_html_e( 'WordPress optimization & tweaks', 'slim-seo' ) ?></p>
 						</div>
 					</div>
 
