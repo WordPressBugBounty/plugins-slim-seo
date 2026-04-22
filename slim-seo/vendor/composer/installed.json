@@ -2,21 +2,20 @@
     "packages": [
         {
             "name": "elightup/slim-seo-common",
-            "version": "dev-master",
-            "version_normalized": "dev-master",
+            "version": "1.0.0",
+            "version_normalized": "1.0.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/elightup/slim-seo-common.git",
-                "reference": "aa51af7eb8146aaf66e5f4a1f03ef26db34d84ed"
+                "reference": "7892c84895598d39079cab19e8d7debc76add50c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/elightup/slim-seo-common/zipball/aa51af7eb8146aaf66e5f4a1f03ef26db34d84ed",
-                "reference": "aa51af7eb8146aaf66e5f4a1f03ef26db34d84ed",
+                "url": "https://api.github.com/repos/elightup/slim-seo-common/zipball/7892c84895598d39079cab19e8d7debc76add50c",
+                "reference": "7892c84895598d39079cab19e8d7debc76add50c",
                 "shasum": ""
             },
-            "time": "2026-03-09T08:50:04+00:00",
-            "default-branch": true,
+            "time": "2026-04-12T18:10:07+00:00",
             "type": "library",
             "installation-source": "dist",
             "autoload": {
@@ -32,7 +31,7 @@
             "homepage": "https://wpslimseo.com",
             "support": {
                 "issues": "https://github.com/elightup/slim-seo-common/issues",
-                "source": "https://github.com/elightup/slim-seo-common/tree/master"
+                "source": "https://github.com/elightup/slim-seo-common/tree/1.0.0"
             },
             "install-path": "../elightup/slim-seo-common"
         },
