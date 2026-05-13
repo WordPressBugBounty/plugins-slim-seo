@@ -2,10 +2,10 @@
 Contributors: elightup, rilwis, hungviet91, barcavn2, doanducanh
 Donate link: https://wpslimseo.com/products/slim-seo-pro/
 Tags: seo, schema, xml sitemap, redirection, header
-Requires at least: 5.9
+Requires at least: 6.5
 Tested up to: 6.9.4
 Requires PHP: 7.4
-Stable tag: 4.9.6
+Stable tag: 4.9.7
 License: GPL v3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -165,11 +165,19 @@ Add the following constant in your `wp-config.php` file:
 
 `define( 'SLIM_SEO_DELETE_DATA', true );`
 
+= Where do I report security bugs found in this plugin? =
+
+Please report security bugs found in the source code of the Slim SEO plugin through the [Patchstack Vulnerability Disclosure Program](https://patchstack.com/database/vdp/9e5fc363-b8e1-4ee5-b1a2-622135c4457a). The Patchstack team will assist you with verification, CVE assignment, and notify the developers of this plugin.
+
 == Screenshots ==
 
 == Upgrade Notice ==
 
 == Changelog ==
+
+= 4.9.7 - 2026-05-13 =
+
+- Fix compatibility with Divi 5
 
 = 4.9.6 - 2026-05-04 =
 
