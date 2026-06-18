@@ -16,6 +16,7 @@ class AI {
 
 	public function register_routes(): void {
 		register_rest_route( 'slim-seo', 'meta-tags/ai', [
+			'show_in_index'       => false,
 			'methods'             => WP_REST_Server::EDITABLE,
 			'callback'            => [ $this, 'generate' ],
 			'permission_callback' => function () {
@@ -24,6 +25,7 @@ class AI {
 		] );
 
 		register_rest_route( 'slim-seo', 'ai/models', [
+			'show_in_index'       => false,
 			'methods'             => WP_REST_Server::READABLE,
 			'callback'            => [ $this, 'get_models' ],
 			'permission_callback' => function () {
@@ -52,7 +54,13 @@ class AI {
 		$type           = $request->get_param( 'type' ) === 'description' ? 'description' : 'title';
 
 		if ( 'post' === ( $object['type'] ?? '' ) ) {
-			$content = Data::get_post_content( $object['ID'] ?? 0, $content );
+			$post_id = (int) ( $object['ID'] ?? 0 );
+
+			if ( $post_id <= 0 || ! current_user_can( 'edit_post', $post_id ) ) {
+				return $this->response( __( 'You are not allowed to generate meta tags for this post.', 'slim-seo' ) );
+			}
+
+			$content = Data::get_post_content( $post_id, $content );
 		}
 
 		// Preprocess content: strip HTML, normalize whitespace, limit length
@@ -192,7 +200,7 @@ RULE;
 		// Validate model - use default if empty
 		if ( empty( $model ) ) {
 			$models = $provider_obj->get_models();
-			$model  = $models[0]['value'] ?? '';
+			$model  = $models[0] ?? '';
 		}
 
 		if ( empty( $model ) ) {
